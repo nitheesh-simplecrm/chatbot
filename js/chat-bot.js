@@ -16,7 +16,7 @@ function chatBot() {
 	this.respondTo = function(input) {
 	
 		this.input = input.toLowerCase();
-		
+
 		if(this.match('(hi|hello|hey|hola|howdy)(\\s|!|\\.|$)'))
 			return "Hi there";
 		
@@ -38,7 +38,7 @@ function chatBot() {
 		if(this.input == 'noop')
 			return;
 		
-		return input + " what?";
+		return "fail";
 	}
 	
 	/**

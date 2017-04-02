@@ -2,7 +2,7 @@ $(function() {
 
 	// chat aliases
 	var you = 'You';
-	var robot = 'Buddy';
+	var robot = 'SimpleCRM';
 	
 	// slow reply by 400 to 800 ms
 	var delayStart = 400;
@@ -23,22 +23,32 @@ $(function() {
 		$('.input input').val('');
 		updateChat(you, input);
 		
-		var reply = bot.respondTo(input);
-		if(reply == null) return;
+		// var reply = bot.respondTo(input);
+		// if(reply == null) return;
 		
-		var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
-		$('.busy').css('display', 'block');
-		waiting++;
-		setTimeout( function() {
-			if(typeof reply === 'string') {
-				updateChat(robot, reply);
-			} else {
-				for(var r in reply) {
-					updateChat(robot, reply[r]);
+		$.ajax({
+			url:'qa.php',
+			method:'post',
+			async:false,
+			data:{input:input},
+			success:function(data){
+			
+				reply = data;
+			var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
+			$('.busy').css('display', 'block');
+			waiting++;
+			setTimeout( function() {
+				if(typeof reply === 'string') {
+					updateChat(robot, reply);
+				} else {
+					for(var r in reply) {
+						updateChat(robot, reply[r]);
+					}
 				}
-			}
-			if(--waiting == 0) $('.busy').css('display', 'none');
-		}, latency);
+				if(--waiting == 0) $('.busy').css('display', 'none');
+			}, latency);
+		}
+		});
 	}
 	
 	// add a new line to the chat
