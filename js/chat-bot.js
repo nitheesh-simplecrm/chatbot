@@ -21,7 +21,7 @@ function chatBot() {
 			return "Hi there";
 		
 		if(this.match('what[^ ]* up') || this.match('sup') || this.match('how are you'))
-			return "this github thing is pretty cool, huh?";
+			return "Good, How about you?";
 		
 		if(this.match('l(ol)+') || this.match('(ha)+(h|$)') || this.match('lmao'))
 			return "what's so funny?";

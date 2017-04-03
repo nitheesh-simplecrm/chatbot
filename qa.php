@@ -64,7 +64,7 @@ $questions = $response->getAnswer($question);
 usort($questions,'percentDescSort');
 $answer = $questions[0]['answer'];
 $percent = $questions[0]['percent'];
-if($percent >= 60){
+if($percent >= 50){
 	echo $answer;
 }else{
 	echo 'OK, please try to rephrase your query in some other way';
