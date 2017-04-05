@@ -19,7 +19,6 @@ $(function() {
 	
 		var input = $('.input input').val();
 		if(input == '') return;
-		
 		$('.input input').val('');
 		updateChat(you, input);
 		
@@ -72,13 +71,15 @@ $(function() {
 	var updateChat = function(party, text) {
 	
 		var style = 'you';
+		var line = $('   <div class="row msg_container base_sent">                        <div class="col-md-10 col-xs-10">                          <div class="messages msg_sent">                                <p>'+text+'</p>                         </div>                        </div>                        <div class="col-md-2 col-xs-2 avatar">                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">                        </div>                    </div>');
 		if(party != you) {
 			style = 'other';
+			var line = $('<div class="row msg_container base_receive">                        <div class="col-md-2 col-xs-2 avatar">                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">                        </div>                        <div class="col-md-10 col-xs-10">                            <div class="messages msg_receive">                                <p>'+text+'</p>                            </div>                        </div>                    </div>');
 		}
 		
-		var line = $('<div><span class="party"></span> <span class="text"></span></div>');
-		line.find('.party').addClass(style).text(party + ':');
-		line.find('.text').text(text);
+		
+		// line.find('.party').addClass(style).text(party + ':');
+		//line.find('.text').text(text);
 		
 		chat.append(line);
 		
