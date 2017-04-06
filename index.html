@@ -8,6 +8,8 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
+
 <script type="text/javascript">
 $(document).on('click', '.panel-heading span.icon_minim', function (e) {
     var $this = $(this);
@@ -39,7 +41,7 @@ $(document).on('click', '#new_chat', function (e) {
 
 $(document).on('click', '#open_new_chat', function (e) {
 
-window.open("http://localhost/chatbot/git/chatbot",null,
+window.open("http://localhost/chatbot",null,
 "height=600,width=700,status=yes,toolbar=no,menubar=no,location=no");
 
 // e.preventDefault();
@@ -59,6 +61,7 @@ body{
     height:400px;
     position: fixed;
     bottom: 0;
+    font-family: open-sans;
 }
 .col-md-2, .col-md-10{
     padding:0;
@@ -188,36 +191,66 @@ img {
 #chat_window_1{
     width: 1200px;
 }
+.enterMessage{
+    display: none;
+}
 </style>
 
 </head>
 <body>
 <div class="container">
+
+   
     <div class="row chat-window pull-right offset-col-sm-3" id="chat_window_1">
         <div class="col-xs-3 col-md-3">
         	<div class="panel panel-default">
-                <div class="panel-heading top-bar">
+                <div class="panel-heading top-bar" style="background-color:#03363D;color:#FAFAFA; !important">
                     <div class="col-md-8 col-xs-8">
-                        <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat with us</h3>
+                        <h6 class="panel-title" style="font-size:12px; !important"><span class="glyphicon glyphicon-comment"></span> SimpleCRM 24/7</h6>
                     </div>
                     <div class="col-md-2 col-xs-2" style="text-align: right;">
-                        <a href="http://localhost/chatbot/git/chatbot"><span id="open_new_chat" class="glyphicon glyphicon-new-window"></span></a>
+                        <a href="chatbot"><span id="open_new_chat" class="glyphicon glyphicon-new-window" style="color:#FAFAFA; !important"></span></a>
                     </div>
                     <div class="col-md-2 col-xs-2" style="text-align: right;">
-                        <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
+                        <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim" style="color:#FAFAFA; !important"></span></a>
                     </div>
                 </div>
-                <div class="panel-body msg_container_base chat">							
+                <form id="form" name="form">
+                <div class="panel-body msg_container_base chat">
+                    <div class="detail">
+                        <div class="form-group has-success">
+                            <b>Please fill in your details</b>
+                        </div>
+                        <div class="form-group has-success">
+                          <label class="form-control-label" for="inputSuccess1">Introduce yourself *</label>
+                          <input type="text" class="form-control form-control-success" class="required" id="name" name="name" placeholder="Name, Email">
+                        </div>
+                        <div class="form-group has-success">
+                          <label class="form-control-label" for="inputSuccess2">Mobile Number *</label>
+                          <input type="text" class="form-control form-control-success" class="required" id="mobile" name="mobile" placeholder="Mobile Number">
+                        </div>
+                        <div class="form-group has-success">
+                          <label class="form-control-label" for="inputSuccess2">Message *</label>
+                          <textarea class="form-control form-control-success" id="message" class="required" name="message" placeholder="Message"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <span class="busy"></span>
-                <div class="panel-footer">
+                 <div class="panel-footer sendMessage" style="padding: 0px 75px; !important">
+                    <div class="input-group input">
+                       <button type="submit" class="btn btn-primary" id="btn-chat">Send Message</button>
+                    </div>
+                </div>
+                </form>
+                <div class="panel-footer enterMessage">
                     <div class="input-group input">
                         <input id="btn-input" type="text" class="form-control input-sm chat_input" placeholder="Write your message here..." style="height: 34px;" />
                         <span class="input-group-btn">
                         <a class="btn btn-primary btn-sm" id="btn-chat"><i class="glyphicon glyphicon-send" aria-hidden="true"></i></a>
                         </span>
                     </div>
-                </div>
+                </div> 
+               
     		</div>
         </div>
     </div>
@@ -226,6 +259,59 @@ img {
 </body>
 
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="js/jquery-cookie.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/chat-bot.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
+
+<script type="text/javascript"> 
+      $(document).ready(function() { 
+
+        var userId = $.cookie("userId");
+        var name = $.cookie("name");
+
+        if(userId){
+            $('.enterMessage').show();
+            $('.sendMessage').hide();
+            $('.detail').hide();
+        }else{
+            $('.enterMessage').hide();
+            $('.sendMessage').show();
+            $('.detail').show();
+        }
+         $("#form").validate({ 
+          rules: { 
+            name: "required", 
+            mobile: "required",
+            message: "required"
+          }, 
+          messages: { 
+            name: "Please update your profile.",
+            mobile: "Please provide a valid phone.",
+            message: "Complete this field." 
+          },
+          submitHandler: function(form) {
+            var formData = $('#form').serialize();
+            $.ajax({
+                 url:'saveDetails.php',
+                 method:'post',
+                 async:false,
+                 data:formData,
+                 dataType:"json",
+                 success:function(data){
+                    $.cookie("userId", data.userID);
+                    $.cookie("name", data.name);
+                    var userId = $.cookie("userId");
+                    var name = $.cookie("name");
+                    console.log(userId);
+                    console.log(name);
+                    $('.enterMessage').show();
+                    $('.sendMessage').hide();
+                    $('.detail').hide();
+                 }
+            });
+          } 
+        }); 
+      }); 
+</script> 
 </html>
