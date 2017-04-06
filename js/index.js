@@ -18,51 +18,73 @@ $(function() {
 	var submitChat = function() {
 	
 		var input = $('.input input').val();
+		var accessToken = "cf16e17403a946c8851dfd1d7515683b";
+        var baseUrl = "https://api.api.ai/v1/";
 		if(input == '') return;
 		$('.input input').val('');
 		updateChat(you, input);
 		
-		var reply = bot.respondTo(input);
-		if(reply != 'fail'){
+        $.ajax({
+            type: "POST",
+            url: baseUrl + "query?v=20150910",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+                "Authorization": "Bearer " + accessToken
+            },
+            data: JSON.stringify({ query: input, lang: "en", sessionId: "somerandomthing" }),
+            success: function(data) {
+                console.log(data.result.fulfillment.speech);
+                // setResponse(data.result.fulfillment.speech);
+                updateChat(robot, data.result.fulfillment.speech);
+            },
+            error: function() {
+                setResponse("Internal Server Error");
+            }
+        });
+
+		// var reply = bot.respondTo(input);
+		// if(reply != 'fail'){
 		
-		var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
-			$('.busy').css('display', 'block');
-			waiting++;
-			setTimeout( function() {
-				if(typeof reply === 'string') {
-					updateChat(robot, reply);
-				} else {
-					for(var r in reply) {
-						updateChat(robot, reply[r]);
-					}
-				}
-				if(--waiting == 0) $('.busy').css('display', 'none');
-			}, latency);
-		}else{
-			$.ajax({
-			url:'qa.php',
-			method:'post',
-			async:false,
-			data:{input:input},
-			success:function(data){
+		// var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
+		// 	$('.busy').css('display', 'block');
+		// 	waiting++;
+		// 	setTimeout( function() {
+		// 		if(typeof reply === 'string') {
+		// 			updateChat(robot, reply);
+		// 		} else {
+		// 			for(var r in reply) {
+		// 				updateChat(robot, reply[r]);
+		// 			}
+		// 		}
+		// 		if(--waiting == 0) $('.busy').css('display', 'none');
+		// 	}, latency);
+		// }else{
+
+		// 	$.ajax({
+		// 	url:'qa.php',
+		// 	method:'post',
+		// 	async:false,
+		// 	data:{input:input},
+		// 	success:function(data){
 			
-			reply = data;
-			var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
-			$('.busy').css('display', 'block');
-			waiting++;
-			setTimeout( function() {
-				if(typeof reply === 'string') {
-					updateChat(robot, reply);
-				} else {
-					for(var r in reply) {
-						updateChat(robot, reply[r]);
-					}
-				}
-				if(--waiting == 0) $('.busy').css('display', 'none');
-			}, latency);
-		}
-		});
-		}
+		// 	reply = data;
+		// 	var latency = Math.floor((Math.random() * (delayEnd - delayStart)) + delayStart);
+		// 	$('.busy').css('display', 'block');
+		// 	waiting++;
+		// 	setTimeout( function() {
+		// 		if(typeof reply === 'string') {
+		// 			updateChat(robot, reply);
+		// 		} else {
+		// 			for(var r in reply) {
+		// 				updateChat(robot, reply[r]);
+		// 			}
+		// 		}
+		// 		if(--waiting == 0) $('.busy').css('display', 'none');
+		// 	}, latency);
+		// }
+		// });
+		// }
 
 		
 	}
