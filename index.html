@@ -216,8 +216,10 @@ img {
                     </div>
                 </div>
                 <form id="form" name="form">
-                <div class="panel-body msg_container_base chat">
-                    <div class="detail">
+                <div class="panel-body msg_container_base chat chatbody">
+                   
+                </div>
+                 <div class="panel-body msg_container_base chat initialbody">
                         <div class="form-group has-success">
                             <b>Please fill in your details</b>
                         </div>
@@ -233,7 +235,6 @@ img {
                           <label class="form-control-label" for="inputSuccess2">Message *</label>
                           <textarea class="form-control form-control-success" id="message" class="required" name="message" placeholder="Message"></textarea>
                         </div>
-                    </div>
                 </div>
                 <span class="busy"></span>
                  <div class="panel-footer sendMessage" style="padding: 0px 75px; !important">
@@ -273,11 +274,13 @@ img {
         if(userId){
             $('.enterMessage').show();
             $('.sendMessage').hide();
-            $('.detail').hide();
+            $('.chatbody').show();
+            $('.initialbody').hide();
         }else{
             $('.enterMessage').hide();
             $('.sendMessage').show();
-            $('.detail').show();
+            $('.chatbody').hide();
+            $('.initialbody').show();
         }
          $("#form").validate({ 
           rules: { 
@@ -307,7 +310,8 @@ img {
                     console.log(name);
                     $('.enterMessage').show();
                     $('.sendMessage').hide();
-                    $('.detail').hide();
+                    $('.chatbody').show();
+                    $('.initialbody').hide();
                  }
             });
           } 

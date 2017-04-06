@@ -15,7 +15,8 @@ $(function() {
 	$('.busy').text(robot + ' is typing...');
 
 	// setChatHistory
-	var visitor_id = 2147483647;
+	// var visitor_id = 2147483647;
+	var visitor_id = $.cookie("userId"); // getting cookie value
 
 	$.ajax({
 		url:'savechat.php',
@@ -30,9 +31,9 @@ $(function() {
 	    	if (data.trim() == 'no results') {
  				
 				// initial chat state
-				var line = $('<div class="row msg_container base_receive">                        <div class="col-md-2 col-xs-2 avatar">                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">                        </div>                        <div class="col-md-10 col-xs-10">                            <div class="messages msg_receive">                                <p>'+'Hi there, please type something...'+'</p>                            </div>                        </div>                    </div>');
-				chat.append(line);
-				chat.stop().animate({ scrollTop: chat.prop("scrollHeight")});
+				//var line = $('<div class="row msg_container base_receive">                        <div class="col-md-2 col-xs-2 avatar">                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">                        </div>                        <div class="col-md-10 col-xs-10">                            <div class="messages msg_receive">                                <p>'+'Hi there, please type something...'+'</p>                            </div>                        </div>                    </div>');
+				//chat.append(line);
+				//chat.stop().animate({ scrollTop: chat.prop("scrollHeight")});
 	    	}
 	    	else{
 	
@@ -95,7 +96,7 @@ $(function() {
 				// save chat history in db
 				var api_answer = data.result.fulfillment.speech;
 				console.log('api_answer : '+api_answer);
-				var visitor_id = 2147483647;
+				var visitor_id = $.cookie("userId"); // getting cookie value
 				$.ajax({
 					url:'savechat.php',
 					method:'post',
