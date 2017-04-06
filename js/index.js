@@ -16,7 +16,7 @@ $(function() {
 	
 	// submit user input and get chat-bot's reply
 	var submitChat = function() {
-	
+		$('.busy').css('display', 'block');
 		var input = $('.input input').val();
 		var accessToken = "cf16e17403a946c8851dfd1d7515683b";
         var baseUrl = "https://api.api.ai/v1/";
@@ -37,6 +37,7 @@ $(function() {
                 console.log(data.result.fulfillment.speech);
                 // setResponse(data.result.fulfillment.speech);
                 updateChat(robot, data.result.fulfillment.speech);
+                $('.busy').css('display', 'none');
             },
             error: function() {
                 setResponse("Internal Server Error");
